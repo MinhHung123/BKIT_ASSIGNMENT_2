@@ -1,0 +1,4 @@
+../Core/Src/hwi.c:9:6:hw_init	8	static
+../Core/Src/hwi.c:18:9:send_byte	16	static
+../Core/Src/hwi.c:23:9:receive_byte	16	static
+../Core/Src/hwi.c:30:6:UART_Callback	16	static

@@ -1,0 +1,5 @@
+../Core/Src/button.c:24:6:button_init	1
+../Core/Src/button.c:34:6:button_scan	9
+../Core/Src/button.c:64:9:isPress	2
+../Core/Src/button.c:75:6:resetButton	2
+../Core/Src/button.c:83:9:isLongPress	2
