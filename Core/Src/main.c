@@ -20,6 +20,7 @@
 #include "main.h"
 #include "adc.h"
 #include "dma.h"
+#include "i2c.h"
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"
@@ -33,6 +34,7 @@
 #include "led_7seg.h"
 #include "software_timer.h"
 #include "hwi.h"
+#include "mpl.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -104,6 +106,7 @@ int main(void)
   MX_FSMC_Init();
   MX_SPI1_Init();
   MX_TIM3_Init();
+  MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
   init_system();
   /* USER CODE END 2 */
@@ -114,22 +117,23 @@ int main(void)
   {
     /* USER CODE END WHILE */
 	  button_scan();
-#ifdef MASTER_MODE
-	  static uint8_t item = 'A';
-	  send_byte(item);
-	  lcd_show_string(50, 100, "Master sending data", WHITE, BLACK, 16, 0);
-	  lcd_show_char(120, 160, item, WHITE, BLACK, 16, 0);
-	  item++;
-	  if(item > 'Z') item = 'A';
-	  HAL_Delay(1000);
-#else
-	  uint8_t new_data;
-	  lcd_show_string(100, 5, "SLAVE MODE", WHITE, BLACK, 16, 0);
-	  if(receive_byte(&new_data)){
-		  lcd_show_string(100, 100, "Slave receiving data", WHITE, BLACK, 16, 0);
-		  lcd_show_char(100, 150, new_data, WHITE, BLACK, 16, 0);
-	  }
-#endif
+	  mpl_fsm();
+	  #ifdef MASTER_MODE
+	  	  static uint8_t item = 'A';
+	  	  send_byte(item);
+	  	  lcd_show_string(50, 100, "Master sending data", WHITE, BLACK, 16, 0);
+	  	  lcd_show_char(120, 160, item, WHITE, BLACK, 16, 0);
+	  	  item++;
+	  	  if(item > 'Z') item = 'A';
+	  	  HAL_Delay(1000);
+	  #else
+	  	  uint8_t new_data;
+	  	  lcd_show_string(100, 5, "SLAVE MODE", WHITE, BLACK, 16, 0);
+	  	  if(receive_byte(&new_data)){
+	  		  lcd_show_string(100, 100, "Slave receiving data", WHITE, BLACK, 16, 0);
+	  		  lcd_show_char(100, 150, new_data, WHITE, BLACK, 16, 0);
+	  	  }
+	  #endif
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
