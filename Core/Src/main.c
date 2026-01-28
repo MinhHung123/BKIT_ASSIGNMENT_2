@@ -119,20 +119,20 @@ int main(void)
 	  button_scan();
 	  mpl_fsm();
 	  #ifdef MASTER_MODE
-	  	  static uint8_t item = 'A';
-	  	  send_byte(item);
-	  	  lcd_show_string(50, 100, "Master sending data", WHITE, BLACK, 16, 0);
-	  	  lcd_show_char(120, 160, item, WHITE, BLACK, 16, 0);
-	  	  item++;
-	  	  if(item > 'Z') item = 'A';
-	  	  HAL_Delay(1000);
+	  	  static float humid = 60.0f;
+	  	  static float temp = 25.0f;
+
+	  	lcd_show_string(10, 5, "MODE: MASTER", CYAN, BLACK, 16, 0);
+		lcd_show_string(10, 40, "Sending Data...", WHITE, BLACK, 16, 0);
+
+		master_encode(1, temp, humid);
+		temp += 0.5f;
+		humid -= 0.2f;
+		if(temp > 45.0f) temp = 25.0f;
+		HAL_Delay(2000);
 	  #else
-	  	  uint8_t new_data;
 	  	  lcd_show_string(100, 5, "SLAVE MODE", WHITE, BLACK, 16, 0);
-	  	  if(receive_byte(&new_data)){
-	  		  lcd_show_string(100, 100, "Slave receiving data", WHITE, BLACK, 16, 0);
-	  		  lcd_show_char(100, 150, new_data, WHITE, BLACK, 16, 0);
-	  	  }
+	  	  mpl_fsm();
 	  #endif
     /* USER CODE BEGIN 3 */
   }

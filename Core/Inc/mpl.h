@@ -12,6 +12,9 @@
 #include "crc16.h"
 #include "software_timer.h"
 #include "lcd.h"
+#include "pb_decode.h"
+#include "pb_encode.h"
+#include "sensor.pb.h"
 
 void mpl_fsm();
 void mpl_init();
@@ -19,5 +22,7 @@ uint8_t is_start_byte();
 uint8_t receiving_header();
 uint8_t receiving_payload();
 uint8_t crc_checking();
+void master_encode(uint32_t slave_id, float temp, float humid);
+void slave_decode(uint8_t *ptr, uint16_t pay_length);
 
 #endif /* INC_MPL_H_ */
