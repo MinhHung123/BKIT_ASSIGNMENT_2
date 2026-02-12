@@ -35,6 +35,7 @@
 #include "software_timer.h"
 #include "hwi.h"
 #include "mpl.h"
+#include "app.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -55,7 +56,9 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+uint16_t adc_buffer[2];
+float temp;
+float humid;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -109,6 +112,8 @@ int main(void)
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
   init_system();
+  HAL_ADC_Start_DMA(&hadc1, (uint32_t*)adc_buffer, 2);
+  timer_set(1, 1000);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -117,22 +122,25 @@ int main(void)
   {
     /* USER CODE END WHILE */
 	  button_scan();
-	  mpl_fsm();
+	  convert_mode();
+
 	  #ifdef MASTER_MODE
-	  	  static float humid = 60.0f;
-	  	  static float temp = 25.0f;
+	  if(timer_isExpired(1)){
+		char msg_buf[20];
 
-	  	lcd_show_string(10, 5, "MODE: MASTER", CYAN, BLACK, 16, 0);
-		lcd_show_string(10, 40, "Sending Data...", WHITE, BLACK, 16, 0);
+		lcd_show_string(10, 5, "-----------MASTER-----------", YELLOW, BLACK, 16, 0);
 
-		master_encode(1, temp, humid);
-		temp += 0.5f;
-		humid -= 0.2f;
-		if(temp > 45.0f) temp = 25.0f;
-		HAL_Delay(2000);
+		sprintf(msg_buf, "TEMP:  %.2f C  ", temp);
+		lcd_show_string(10, 40, msg_buf, WHITE, BLACK, 16, 0);
+		sprintf(msg_buf, "HUMID: %.2f %%  ", humid);
+		lcd_show_string(10, 60, msg_buf, WHITE, BLACK, 16, 0);
+
+		update_sensor_data();
+		timer_set(1, 1000);
+	  }
 	  #else
-	  	  lcd_show_string(100, 5, "SLAVE MODE", WHITE, BLACK, 16, 0);
-	  	  mpl_fsm();
+		  lcd_show_string(10, 5, "-----------SLAVE-----------", YELLOW, BLACK, 16, 0);
+		  mpl_fsm();
 	  #endif
     /* USER CODE BEGIN 3 */
   }
@@ -204,6 +212,9 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 	UART_Callback(huart);
 }
 
+void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef *hi2c){
+	I2C_Callback(hi2c);
+}
 /* USER CODE END 4 */
 
 /**

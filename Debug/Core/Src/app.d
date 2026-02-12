@@ -1,5 +1,6 @@
-Core/Src/hwi.o: ../Core/Src/hwi.c ../Core/Inc/hwi.h ../Core/Inc/usart.h \
- ../Core/Inc/main.h ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
+Core/Src/app.o: ../Core/Src/app.c ../Core/Inc/app.h ../Core/Inc/hwi.h \
+ ../Core/Inc/usart.h ../Core/Inc/main.h \
+ ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  ../Core/Inc/stm32f4xx_hal_conf.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h \
@@ -37,7 +38,10 @@ Core/Src/hwi.o: ../Core/Src/hwi.c ../Core/Inc/hwi.h ../Core/Inc/usart.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
  ../Core/Inc/software_timer.h ../Core/Inc/tim.h ../Core/Inc/i2c.h \
  ../Core/Inc/button.h ../Core/Inc/global.h ../Core/Inc/lcd.h \
- ../Core/Inc/gpio.h ../Core/Inc/main.h
+ ../Core/Inc/gpio.h ../Core/Inc/mpl.h ../Core/Inc/crc16.h \
+ ../Core/Inc/pb_decode.h ../Core/Inc/pb.h ../Core/Inc/pb_encode.h \
+ ../Core/Inc/sensor.pb.h ../Core/Inc/pb.h ../Core/Inc/app.h
+../Core/Inc/app.h:
 ../Core/Inc/hwi.h:
 ../Core/Inc/usart.h:
 ../Core/Inc/main.h:
@@ -84,4 +88,11 @@ Core/Src/hwi.o: ../Core/Src/hwi.c ../Core/Inc/hwi.h ../Core/Inc/usart.h \
 ../Core/Inc/global.h:
 ../Core/Inc/lcd.h:
 ../Core/Inc/gpio.h:
-../Core/Inc/main.h:
+../Core/Inc/mpl.h:
+../Core/Inc/crc16.h:
+../Core/Inc/pb_decode.h:
+../Core/Inc/pb.h:
+../Core/Inc/pb_encode.h:
+../Core/Inc/sensor.pb.h:
+../Core/Inc/pb.h:
+../Core/Inc/app.h:
