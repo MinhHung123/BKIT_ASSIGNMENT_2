@@ -2,9 +2,9 @@
 #include "stdio.h"
 
 SensorMessage decode_msg = SensorMessage_init_default;
-extern uint16_t adc_buffer[2];
-extern float temp;
-extern float humid;
+uint16_t adc_buffer[5];
+float temp;
+float humid;
 
 void master_encode(uint32_t slave_id, float temp, float humid){
     SensorMessage msg = SensorMessage_init_default;
@@ -56,7 +56,7 @@ void slave_decode(uint8_t *ptr, uint16_t pay_length){
 }
 
 void update_sensor_data(){
-	temp = (adc_buffer[0] / 4095.0f) * 330.0f;
-	humid = (adc_buffer[1] / 4095.0f) * 100.0f;
+	temp = ((float)adc_buffer[4] * 330.0f) / 4095.0f;
+	humid = ((float)adc_buffer[3] * 100.0f) / 4095.0f;
 	master_encode(1, temp, humid);
 }

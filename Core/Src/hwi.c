@@ -51,7 +51,6 @@ void I2C_Callback(I2C_HandleTypeDef *hi2c){
 		}
 	}
 }
-
 void convert_mode(){
 	if(isPress(0)){
 		if(current_mode == MODE_UART){

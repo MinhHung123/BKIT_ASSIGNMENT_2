@@ -3,4 +3,4 @@
 ../Core/Src/hwi.c:28:9:receive_byte	2
 ../Core/Src/hwi.c:35:6:UART_Callback	3
 ../Core/Src/hwi.c:45:6:I2C_Callback	3
-../Core/Src/hwi.c:55:6:convert_mode	3
+../Core/Src/hwi.c:54:6:convert_mode	3

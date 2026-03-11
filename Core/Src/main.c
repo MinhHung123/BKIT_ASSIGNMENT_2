@@ -56,9 +56,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint16_t adc_buffer[2];
-float temp;
-float humid;
+void lcd_display();
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -112,8 +110,6 @@ int main(void)
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
   init_system();
-  HAL_ADC_Start_DMA(&hadc1, (uint32_t*)adc_buffer, 2);
-  timer_set(1, 1000);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -126,20 +122,12 @@ int main(void)
 
 	  #ifdef MASTER_MODE
 	  if(timer_isExpired(1)){
-		char msg_buf[20];
-
-		lcd_show_string(10, 5, "-----------MASTER-----------", YELLOW, BLACK, 16, 0);
-
-		sprintf(msg_buf, "TEMP:  %.2f C  ", temp);
-		lcd_show_string(10, 40, msg_buf, WHITE, BLACK, 16, 0);
-		sprintf(msg_buf, "HUMID: %.2f %%  ", humid);
-		lcd_show_string(10, 60, msg_buf, WHITE, BLACK, 16, 0);
-
+		lcd_display();
 		update_sensor_data();
 		timer_set(1, 1000);
 	  }
 	  #else
-		  lcd_show_string(10, 5, "-----------SLAVE-----------", YELLOW, BLACK, 16, 0);
+	  	  lcd_display();
 		  mpl_fsm();
 	  #endif
     /* USER CODE BEGIN 3 */
@@ -199,6 +187,23 @@ void init_system(){
 	lcd_init();
 	lcd_clear(BLACK);
 	hw_init();
+	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)adc_buffer, 5);
+	timer_set(1, 1000);
+}
+
+void lcd_display(){
+#ifdef MASTER_MODE
+	char msg_buf[20];
+
+	lcd_show_string(10, 5, "-----------MASTER-----------", YELLOW, BLACK, 16, 0);
+
+	sprintf(msg_buf, "TEMP:  %.2f C  ", temp);
+	lcd_show_string(10, 40, msg_buf, WHITE, BLACK, 16, 0);
+	sprintf(msg_buf, "HUMID: %.2f %%  ", humid);
+	lcd_show_string(10, 60, msg_buf, WHITE, BLACK, 16, 0);
+#else
+	lcd_show_string(10, 5, "-----------SLAVE-----------", YELLOW, BLACK, 16, 0);
+#endif
 }
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {

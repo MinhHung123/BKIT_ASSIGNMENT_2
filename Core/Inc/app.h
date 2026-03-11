@@ -21,6 +21,10 @@
 #include "lcd.h"
 #include "crc16.h"
 
+extern float temp;
+extern float humid;
+extern uint16_t adc_buffer[5];
+
 void master_encode(uint32_t slave_id, float temp, float humid);
 void slave_decode(uint8_t *ptr, uint16_t pay_length);
 void update_sensor_data();

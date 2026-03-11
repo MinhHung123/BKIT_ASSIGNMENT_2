@@ -14,7 +14,7 @@
 #ifndef INC_HWI_H_
 #define INC_HWI_H_
 
-//#define MASTER_MODE
+#define MASTER_MODE
 
 #define MAX_BUFFER 256
 
